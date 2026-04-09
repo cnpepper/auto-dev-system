@@ -9,6 +9,75 @@ export type Body_login_login_access_token = {
     client_secret?: (string | null);
 };
 
+/**
+ * 执行日志公开Schema
+ */
+export type ExecutionLogPublic = {
+    /**
+     * 日志级别
+     */
+    log_level?: string;
+    /**
+     * 日志消息
+     */
+    message: string;
+    /**
+     * 额外元数据
+     */
+    extra_data?: ({
+    [key: string]: unknown;
+} | null);
+    id: number;
+    stage_id: number;
+    created_at: string;
+};
+
+/**
+ * 执行日志列表
+ */
+export type ExecutionLogsPublic = {
+    data: Array<ExecutionLogPublic>;
+    count: number;
+    page: number;
+    page_size: number;
+};
+
+/**
+ * 功能模块公开Schema
+ */
+export type FunctionModulePublic = {
+    /**
+     * 模块名称
+     */
+    module_name: string;
+    /**
+     * 模块描述
+     */
+    description?: (string | null);
+    /**
+     * 状态
+     */
+    status?: string;
+    /**
+     * Git提交哈希
+     */
+    git_commit_hash?: (string | null);
+    id: number;
+    stage_id: number;
+    started_at?: (string | null);
+    completed_at?: (string | null);
+    created_at: string;
+    updated_at: string;
+};
+
+/**
+ * 功能模块列表
+ */
+export type FunctionModulesPublic = {
+    data: Array<FunctionModulePublic>;
+    count: number;
+};
+
 export type HTTPValidationError = {
     detail?: Array<ValidationError>;
 };
@@ -52,9 +121,328 @@ export type PrivateUserCreate = {
     is_verified?: boolean;
 };
 
+/**
+ * 流程阶段公开Schema
+ */
+export type ProcessStagePublic = {
+    /**
+     * 阶段类型: developing/testing
+     */
+    stage_type: string;
+    /**
+     * 阶段名称
+     */
+    stage_name: string;
+    /**
+     * 状态
+     */
+    status?: string;
+    id: number;
+    project_id: number;
+    started_at?: (string | null);
+    completed_at?: (string | null);
+    created_at: string;
+    updated_at: string;
+};
+
+/**
+ * 流程阶段列表
+ */
+export type ProcessStagesPublic = {
+    data: Array<ProcessStagePublic>;
+    count: number;
+};
+
+/**
+ * 更新流程阶段Schema
+ */
+export type ProcessStageUpdate = {
+    stage_type?: (string | null);
+    stage_name?: (string | null);
+    status?: (string | null);
+    started_at?: (string | null);
+    completed_at?: (string | null);
+};
+
+/**
+ * 创建项目Schema
+ */
+export type ProjectCreate = {
+    /**
+     * 项目名称
+     */
+    name: string;
+    /**
+     * 项目描述
+     */
+    description?: (string | null);
+    /**
+     * 当前阶段
+     */
+    current_stage?: string;
+    /**
+     * 当前功能模块名称
+     */
+    current_module?: (string | null);
+    /**
+     * 项目状态
+     */
+    status?: string;
+    /**
+     * 文档输入目录路径
+     */
+    input_document_dir?: string;
+    /**
+     * 项目代码路径
+     */
+    project_path?: string;
+    /**
+     * 项目需求
+     */
+    requirements?: (string | null);
+    /**
+     * 技术栈
+     */
+    tech_stack?: (string | null);
+    /**
+     * 当前活跃的会话ID
+     */
+    current_session_id?: (string | null);
+};
+
+/**
+ * 项目公开Schema
+ */
+export type ProjectPublic = {
+    /**
+     * 项目名称
+     */
+    name: string;
+    /**
+     * 项目描述
+     */
+    description?: (string | null);
+    /**
+     * 当前阶段
+     */
+    current_stage?: string;
+    /**
+     * 当前功能模块名称
+     */
+    current_module?: (string | null);
+    /**
+     * 项目状态
+     */
+    status?: string;
+    /**
+     * 文档输入目录路径
+     */
+    input_document_dir?: string;
+    /**
+     * 项目代码路径
+     */
+    project_path?: string;
+    /**
+     * 项目需求
+     */
+    requirements?: (string | null);
+    /**
+     * 技术栈
+     */
+    tech_stack?: (string | null);
+    /**
+     * 当前活跃的会话ID
+     */
+    current_session_id?: (string | null);
+    id: number;
+    started_at?: (string | null);
+    completed_at?: (string | null);
+    created_at: string;
+    updated_at: string;
+};
+
+/**
+ * 项目列表
+ */
+export type ProjectsPublic = {
+    data: Array<ProjectPublic>;
+    count: number;
+};
+
+/**
+ * 更新项目Schema
+ */
+export type ProjectUpdate = {
+    name?: (string | null);
+    description?: (string | null);
+    current_stage?: (string | null);
+    current_module?: (string | null);
+    status?: (string | null);
+    input_document_dir?: (string | null);
+    project_path?: (string | null);
+    current_session_id?: (string | null);
+    started_at?: (string | null);
+    completed_at?: (string | null);
+};
+
+/**
+ * 创建系统配置Schema
+ */
+export type SystemConfigCreate = {
+    /**
+     * 配置键
+     */
+    config_key: string;
+    /**
+     * 配置值
+     */
+    config_value: string;
+    /**
+     * 配置说明
+     */
+    description?: (string | null);
+};
+
+/**
+ * 系统配置公开Schema
+ */
+export type SystemConfigPublic = {
+    /**
+     * 配置键
+     */
+    config_key: string;
+    /**
+     * 配置值
+     */
+    config_value: string;
+    /**
+     * 配置说明
+     */
+    description?: (string | null);
+    id: number;
+    created_at: string;
+    updated_at: string;
+};
+
+/**
+ * 系统配置列表
+ */
+export type SystemConfigsPublic = {
+    data: Array<SystemConfigPublic>;
+    count: number;
+};
+
+/**
+ * 更新系统配置Schema
+ */
+export type SystemConfigUpdate = {
+    config_value: string;
+    description?: (string | null);
+};
+
+/**
+ * 测试报告公开Schema
+ */
+export type TestReportPublic = {
+    /**
+     * 报告文件路径
+     */
+    report_file_path: string;
+    /**
+     * 总测试用例数
+     */
+    total_cases?: number;
+    /**
+     * 通过用例数
+     */
+    passed_cases?: number;
+    /**
+     * 失败用例数
+     */
+    failed_cases?: number;
+    /**
+     * 报告状态
+     */
+    status?: string;
+    id: number;
+    stage_id: number;
+    created_at: string;
+};
+
 export type Token = {
     access_token: string;
     token_type?: string;
+};
+
+/**
+ * 创建工具配置Schema
+ */
+export type ToolConfigCreate = {
+    /**
+     * 工具名称
+     */
+    tool_name: string;
+    /**
+     * 工具类型
+     */
+    tool_type: string;
+    /**
+     * 工具配置JSON
+     */
+    config_json: {
+        [key: string]: unknown;
+    };
+    /**
+     * 是否激活
+     */
+    is_active?: boolean;
+};
+
+/**
+ * 工具配置公开Schema
+ */
+export type ToolConfigPublic = {
+    /**
+     * 工具名称
+     */
+    tool_name: string;
+    /**
+     * 工具类型
+     */
+    tool_type: string;
+    /**
+     * 工具配置JSON
+     */
+    config_json: {
+        [key: string]: unknown;
+    };
+    /**
+     * 是否激活
+     */
+    is_active?: boolean;
+    id: number;
+    created_at: string;
+    updated_at: string;
+};
+
+/**
+ * 工具配置列表
+ */
+export type ToolConfigsPublic = {
+    data: Array<ToolConfigPublic>;
+    count: number;
+};
+
+/**
+ * 更新工具配置Schema
+ */
+export type ToolConfigUpdate = {
+    tool_name?: (string | null);
+    tool_type?: (string | null);
+    config_json?: ({
+    [key: string]: unknown;
+} | null);
+    is_active?: (boolean | null);
 };
 
 export type UpdatePassword = {
@@ -108,6 +496,60 @@ export type ValidationError = {
     msg: string;
     type: string;
 };
+
+export type ConfigsReadSystemConfigsResponse = (SystemConfigsPublic);
+
+export type ConfigsCreateSystemConfigData = {
+    requestBody: SystemConfigCreate;
+};
+
+export type ConfigsCreateSystemConfigResponse = (SystemConfigPublic);
+
+export type ConfigsReadSystemConfigData = {
+    configKey: string;
+};
+
+export type ConfigsReadSystemConfigResponse = (SystemConfigPublic);
+
+export type ConfigsUpdateSystemConfigData = {
+    configId: number;
+    requestBody: SystemConfigUpdate;
+};
+
+export type ConfigsUpdateSystemConfigResponse = (SystemConfigPublic);
+
+export type ConfigsReadToolConfigsResponse = (ToolConfigsPublic);
+
+export type ConfigsCreateToolConfigData = {
+    requestBody: ToolConfigCreate;
+};
+
+export type ConfigsCreateToolConfigResponse = (ToolConfigPublic);
+
+export type ConfigsReadToolConfigData = {
+    toolId: number;
+};
+
+export type ConfigsReadToolConfigResponse = (ToolConfigPublic);
+
+export type ConfigsUpdateToolConfigData = {
+    requestBody: ToolConfigUpdate;
+    toolId: number;
+};
+
+export type ConfigsUpdateToolConfigResponse = (ToolConfigPublic);
+
+export type ConfigsActivateToolData = {
+    toolId: number;
+};
+
+export type ConfigsActivateToolResponse = (ToolConfigPublic);
+
+export type ConfigsDeactivateToolData = {
+    toolId: number;
+};
+
+export type ConfigsDeactivateToolResponse = (ToolConfigPublic);
 
 export type ItemsReadItemsData = {
     limit?: number;
@@ -172,6 +614,108 @@ export type PrivateCreateUserData = {
 };
 
 export type PrivateCreateUserResponse = (UserPublic);
+
+export type ProjectsReadProjectsData = {
+    limit?: number;
+    skip?: number;
+};
+
+export type ProjectsReadProjectsResponse = (ProjectsPublic);
+
+export type ProjectsCreateProjectData = {
+    requestBody: ProjectCreate;
+};
+
+export type ProjectsCreateProjectResponse = (ProjectPublic);
+
+export type ProjectsReadProjectData = {
+    projectId: number;
+};
+
+export type ProjectsReadProjectResponse = (ProjectPublic);
+
+export type ProjectsUpdateProjectData = {
+    projectId: number;
+    requestBody: ProjectUpdate;
+};
+
+export type ProjectsUpdateProjectResponse = (ProjectPublic);
+
+export type ProjectsDeleteProjectData = {
+    projectId: number;
+};
+
+export type ProjectsDeleteProjectResponse = (unknown);
+
+export type ProjectsStartProjectData = {
+    projectId: number;
+};
+
+export type ProjectsStartProjectResponse = (ProjectPublic);
+
+export type ProjectsPauseProjectData = {
+    projectId: number;
+};
+
+export type ProjectsPauseProjectResponse = (ProjectPublic);
+
+export type ProjectsResumeProjectData = {
+    projectId: number;
+};
+
+export type ProjectsResumeProjectResponse = (ProjectPublic);
+
+export type ProjectsReadProjectStagesData = {
+    projectId: number;
+};
+
+export type ProjectsReadProjectStagesResponse = (ProcessStagesPublic);
+
+export type StagesReadStageData = {
+    stageId: number;
+};
+
+export type StagesReadStageResponse = (ProcessStagePublic);
+
+export type StagesUpdateStageData = {
+    requestBody: ProcessStageUpdate;
+    stageId: number;
+};
+
+export type StagesUpdateStageResponse = (ProcessStagePublic);
+
+export type StagesApproveStageData = {
+    stageId: number;
+};
+
+export type StagesApproveStageResponse = (ProcessStagePublic);
+
+export type StagesRejectStageData = {
+    reason?: string;
+    stageId: number;
+};
+
+export type StagesRejectStageResponse = (ProcessStagePublic);
+
+export type StagesReadStageModulesData = {
+    stageId: number;
+};
+
+export type StagesReadStageModulesResponse = (FunctionModulesPublic);
+
+export type StagesReadStageLogsData = {
+    page?: number;
+    pageSize?: number;
+    stageId: number;
+};
+
+export type StagesReadStageLogsResponse = (ExecutionLogsPublic);
+
+export type StagesReadStageReportsData = {
+    stageId: number;
+};
+
+export type StagesReadStageReportsResponse = (Array<TestReportPublic>);
 
 export type UsersReadUsersData = {
     limit?: number;

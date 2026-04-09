@@ -57,6 +57,190 @@ export const Body_login_login_access_tokenSchema = {
     title: 'Body_login-login_access_token'
 } as const;
 
+export const ExecutionLogPublicSchema = {
+    properties: {
+        log_level: {
+            type: 'string',
+            maxLength: 20,
+            title: 'Log Level',
+            description: '日志级别',
+            default: 'INFO'
+        },
+        message: {
+            type: 'string',
+            title: 'Message',
+            description: '日志消息'
+        },
+        extra_data: {
+            anyOf: [
+                {
+                    additionalProperties: true,
+                    type: 'object'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Extra Data',
+            description: '额外元数据'
+        },
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        stage_id: {
+            type: 'integer',
+            title: 'Stage Id'
+        },
+        created_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Created At'
+        }
+    },
+    type: 'object',
+    required: ['message', 'id', 'stage_id', 'created_at'],
+    title: 'ExecutionLogPublic',
+    description: '执行日志公开Schema'
+} as const;
+
+export const ExecutionLogsPublicSchema = {
+    properties: {
+        data: {
+            items: {
+                '$ref': '#/components/schemas/ExecutionLogPublic'
+            },
+            type: 'array',
+            title: 'Data'
+        },
+        count: {
+            type: 'integer',
+            title: 'Count'
+        },
+        page: {
+            type: 'integer',
+            title: 'Page'
+        },
+        page_size: {
+            type: 'integer',
+            title: 'Page Size'
+        }
+    },
+    type: 'object',
+    required: ['data', 'count', 'page', 'page_size'],
+    title: 'ExecutionLogsPublic',
+    description: '执行日志列表'
+} as const;
+
+export const FunctionModulePublicSchema = {
+    properties: {
+        module_name: {
+            type: 'string',
+            maxLength: 255,
+            title: 'Module Name',
+            description: '模块名称'
+        },
+        description: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Description',
+            description: '模块描述'
+        },
+        status: {
+            type: 'string',
+            maxLength: 50,
+            title: 'Status',
+            description: '状态',
+            default: 'pending'
+        },
+        git_commit_hash: {
+            anyOf: [
+                {
+                    type: 'string',
+                    maxLength: 40
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Git Commit Hash',
+            description: 'Git提交哈希'
+        },
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        stage_id: {
+            type: 'integer',
+            title: 'Stage Id'
+        },
+        started_at: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'date-time'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Started At'
+        },
+        completed_at: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'date-time'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Completed At'
+        },
+        created_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Updated At'
+        }
+    },
+    type: 'object',
+    required: ['module_name', 'id', 'stage_id', 'created_at', 'updated_at'],
+    title: 'FunctionModulePublic',
+    description: '功能模块公开Schema'
+} as const;
+
+export const FunctionModulesPublicSchema = {
+    properties: {
+        data: {
+            items: {
+                '$ref': '#/components/schemas/FunctionModulePublic'
+            },
+            type: 'array',
+            title: 'Data'
+        },
+        count: {
+            type: 'integer',
+            title: 'Count'
+        }
+    },
+    type: 'object',
+    required: ['data', 'count'],
+    title: 'FunctionModulesPublic',
+    description: '功能模块列表'
+} as const;
+
 export const HTTPValidationErrorSchema = {
     properties: {
         detail: {
@@ -251,6 +435,724 @@ export const PrivateUserCreateSchema = {
     title: 'PrivateUserCreate'
 } as const;
 
+export const ProcessStagePublicSchema = {
+    properties: {
+        stage_type: {
+            type: 'string',
+            maxLength: 50,
+            title: 'Stage Type',
+            description: '阶段类型: developing/testing'
+        },
+        stage_name: {
+            type: 'string',
+            maxLength: 255,
+            title: 'Stage Name',
+            description: '阶段名称'
+        },
+        status: {
+            type: 'string',
+            maxLength: 50,
+            title: 'Status',
+            description: '状态',
+            default: 'pending'
+        },
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        project_id: {
+            type: 'integer',
+            title: 'Project Id'
+        },
+        started_at: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'date-time'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Started At'
+        },
+        completed_at: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'date-time'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Completed At'
+        },
+        created_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Updated At'
+        }
+    },
+    type: 'object',
+    required: ['stage_type', 'stage_name', 'id', 'project_id', 'created_at', 'updated_at'],
+    title: 'ProcessStagePublic',
+    description: '流程阶段公开Schema'
+} as const;
+
+export const ProcessStageUpdateSchema = {
+    properties: {
+        stage_type: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Stage Type'
+        },
+        stage_name: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Stage Name'
+        },
+        status: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Status'
+        },
+        started_at: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'date-time'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Started At'
+        },
+        completed_at: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'date-time'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Completed At'
+        }
+    },
+    type: 'object',
+    title: 'ProcessStageUpdate',
+    description: '更新流程阶段Schema'
+} as const;
+
+export const ProcessStagesPublicSchema = {
+    properties: {
+        data: {
+            items: {
+                '$ref': '#/components/schemas/ProcessStagePublic'
+            },
+            type: 'array',
+            title: 'Data'
+        },
+        count: {
+            type: 'integer',
+            title: 'Count'
+        }
+    },
+    type: 'object',
+    required: ['data', 'count'],
+    title: 'ProcessStagesPublic',
+    description: '流程阶段列表'
+} as const;
+
+export const ProjectCreateSchema = {
+    properties: {
+        name: {
+            type: 'string',
+            maxLength: 255,
+            title: 'Name',
+            description: '项目名称'
+        },
+        description: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Description',
+            description: '项目描述'
+        },
+        current_stage: {
+            type: 'string',
+            maxLength: 50,
+            title: 'Current Stage',
+            description: '当前阶段',
+            default: 'idle'
+        },
+        current_module: {
+            anyOf: [
+                {
+                    type: 'string',
+                    maxLength: 255
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Current Module',
+            description: '当前功能模块名称'
+        },
+        status: {
+            type: 'string',
+            maxLength: 50,
+            title: 'Status',
+            description: '项目状态',
+            default: 'idle'
+        },
+        input_document_dir: {
+            type: 'string',
+            maxLength: 500,
+            title: 'Input Document Dir',
+            description: '文档输入目录路径',
+            default: './input_docs'
+        },
+        project_path: {
+            type: 'string',
+            maxLength: 500,
+            title: 'Project Path',
+            description: '项目代码路径',
+            default: './projects'
+        },
+        requirements: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Requirements',
+            description: '项目需求'
+        },
+        tech_stack: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Tech Stack',
+            description: '技术栈'
+        },
+        current_session_id: {
+            anyOf: [
+                {
+                    type: 'string',
+                    maxLength: 100
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Current Session Id',
+            description: '当前活跃的会话ID'
+        }
+    },
+    type: 'object',
+    required: ['name'],
+    title: 'ProjectCreate',
+    description: '创建项目Schema'
+} as const;
+
+export const ProjectPublicSchema = {
+    properties: {
+        name: {
+            type: 'string',
+            maxLength: 255,
+            title: 'Name',
+            description: '项目名称'
+        },
+        description: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Description',
+            description: '项目描述'
+        },
+        current_stage: {
+            type: 'string',
+            maxLength: 50,
+            title: 'Current Stage',
+            description: '当前阶段',
+            default: 'idle'
+        },
+        current_module: {
+            anyOf: [
+                {
+                    type: 'string',
+                    maxLength: 255
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Current Module',
+            description: '当前功能模块名称'
+        },
+        status: {
+            type: 'string',
+            maxLength: 50,
+            title: 'Status',
+            description: '项目状态',
+            default: 'idle'
+        },
+        input_document_dir: {
+            type: 'string',
+            maxLength: 500,
+            title: 'Input Document Dir',
+            description: '文档输入目录路径',
+            default: './input_docs'
+        },
+        project_path: {
+            type: 'string',
+            maxLength: 500,
+            title: 'Project Path',
+            description: '项目代码路径',
+            default: './projects'
+        },
+        requirements: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Requirements',
+            description: '项目需求'
+        },
+        tech_stack: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Tech Stack',
+            description: '技术栈'
+        },
+        current_session_id: {
+            anyOf: [
+                {
+                    type: 'string',
+                    maxLength: 100
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Current Session Id',
+            description: '当前活跃的会话ID'
+        },
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        started_at: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'date-time'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Started At'
+        },
+        completed_at: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'date-time'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Completed At'
+        },
+        created_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Updated At'
+        }
+    },
+    type: 'object',
+    required: ['name', 'id', 'created_at', 'updated_at'],
+    title: 'ProjectPublic',
+    description: '项目公开Schema'
+} as const;
+
+export const ProjectUpdateSchema = {
+    properties: {
+        name: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Name'
+        },
+        description: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Description'
+        },
+        current_stage: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Current Stage'
+        },
+        current_module: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Current Module'
+        },
+        status: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Status'
+        },
+        input_document_dir: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Input Document Dir'
+        },
+        project_path: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Project Path'
+        },
+        current_session_id: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Current Session Id'
+        },
+        started_at: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'date-time'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Started At'
+        },
+        completed_at: {
+            anyOf: [
+                {
+                    type: 'string',
+                    format: 'date-time'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Completed At'
+        }
+    },
+    type: 'object',
+    title: 'ProjectUpdate',
+    description: '更新项目Schema'
+} as const;
+
+export const ProjectsPublicSchema = {
+    properties: {
+        data: {
+            items: {
+                '$ref': '#/components/schemas/ProjectPublic'
+            },
+            type: 'array',
+            title: 'Data'
+        },
+        count: {
+            type: 'integer',
+            title: 'Count'
+        }
+    },
+    type: 'object',
+    required: ['data', 'count'],
+    title: 'ProjectsPublic',
+    description: '项目列表'
+} as const;
+
+export const SystemConfigCreateSchema = {
+    properties: {
+        config_key: {
+            type: 'string',
+            maxLength: 100,
+            title: 'Config Key',
+            description: '配置键'
+        },
+        config_value: {
+            type: 'string',
+            title: 'Config Value',
+            description: '配置值'
+        },
+        description: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Description',
+            description: '配置说明'
+        }
+    },
+    type: 'object',
+    required: ['config_key', 'config_value'],
+    title: 'SystemConfigCreate',
+    description: '创建系统配置Schema'
+} as const;
+
+export const SystemConfigPublicSchema = {
+    properties: {
+        config_key: {
+            type: 'string',
+            maxLength: 100,
+            title: 'Config Key',
+            description: '配置键'
+        },
+        config_value: {
+            type: 'string',
+            title: 'Config Value',
+            description: '配置值'
+        },
+        description: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Description',
+            description: '配置说明'
+        },
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        created_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Updated At'
+        }
+    },
+    type: 'object',
+    required: ['config_key', 'config_value', 'id', 'created_at', 'updated_at'],
+    title: 'SystemConfigPublic',
+    description: '系统配置公开Schema'
+} as const;
+
+export const SystemConfigUpdateSchema = {
+    properties: {
+        config_value: {
+            type: 'string',
+            title: 'Config Value'
+        },
+        description: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Description'
+        }
+    },
+    type: 'object',
+    required: ['config_value'],
+    title: 'SystemConfigUpdate',
+    description: '更新系统配置Schema'
+} as const;
+
+export const SystemConfigsPublicSchema = {
+    properties: {
+        data: {
+            items: {
+                '$ref': '#/components/schemas/SystemConfigPublic'
+            },
+            type: 'array',
+            title: 'Data'
+        },
+        count: {
+            type: 'integer',
+            title: 'Count'
+        }
+    },
+    type: 'object',
+    required: ['data', 'count'],
+    title: 'SystemConfigsPublic',
+    description: '系统配置列表'
+} as const;
+
+export const TestReportPublicSchema = {
+    properties: {
+        report_file_path: {
+            type: 'string',
+            maxLength: 500,
+            title: 'Report File Path',
+            description: '报告文件路径'
+        },
+        total_cases: {
+            type: 'integer',
+            title: 'Total Cases',
+            description: '总测试用例数',
+            default: 0
+        },
+        passed_cases: {
+            type: 'integer',
+            title: 'Passed Cases',
+            description: '通过用例数',
+            default: 0
+        },
+        failed_cases: {
+            type: 'integer',
+            title: 'Failed Cases',
+            description: '失败用例数',
+            default: 0
+        },
+        status: {
+            type: 'string',
+            maxLength: 50,
+            title: 'Status',
+            description: '报告状态',
+            default: 'pending'
+        },
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        stage_id: {
+            type: 'integer',
+            title: 'Stage Id'
+        },
+        created_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Created At'
+        }
+    },
+    type: 'object',
+    required: ['report_file_path', 'id', 'stage_id', 'created_at'],
+    title: 'TestReportPublic',
+    description: '测试报告公开Schema'
+} as const;
+
 export const TokenSchema = {
     properties: {
         access_token: {
@@ -266,6 +1168,159 @@ export const TokenSchema = {
     type: 'object',
     required: ['access_token'],
     title: 'Token'
+} as const;
+
+export const ToolConfigCreateSchema = {
+    properties: {
+        tool_name: {
+            type: 'string',
+            maxLength: 100,
+            title: 'Tool Name',
+            description: '工具名称'
+        },
+        tool_type: {
+            type: 'string',
+            maxLength: 50,
+            title: 'Tool Type',
+            description: '工具类型'
+        },
+        config_json: {
+            additionalProperties: true,
+            type: 'object',
+            title: 'Config Json',
+            description: '工具配置JSON'
+        },
+        is_active: {
+            type: 'boolean',
+            title: 'Is Active',
+            description: '是否激活',
+            default: false
+        }
+    },
+    type: 'object',
+    required: ['tool_name', 'tool_type', 'config_json'],
+    title: 'ToolConfigCreate',
+    description: '创建工具配置Schema'
+} as const;
+
+export const ToolConfigPublicSchema = {
+    properties: {
+        tool_name: {
+            type: 'string',
+            maxLength: 100,
+            title: 'Tool Name',
+            description: '工具名称'
+        },
+        tool_type: {
+            type: 'string',
+            maxLength: 50,
+            title: 'Tool Type',
+            description: '工具类型'
+        },
+        config_json: {
+            additionalProperties: true,
+            type: 'object',
+            title: 'Config Json',
+            description: '工具配置JSON'
+        },
+        is_active: {
+            type: 'boolean',
+            title: 'Is Active',
+            description: '是否激活',
+            default: false
+        },
+        id: {
+            type: 'integer',
+            title: 'Id'
+        },
+        created_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Created At'
+        },
+        updated_at: {
+            type: 'string',
+            format: 'date-time',
+            title: 'Updated At'
+        }
+    },
+    type: 'object',
+    required: ['tool_name', 'tool_type', 'config_json', 'id', 'created_at', 'updated_at'],
+    title: 'ToolConfigPublic',
+    description: '工具配置公开Schema'
+} as const;
+
+export const ToolConfigUpdateSchema = {
+    properties: {
+        tool_name: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Tool Name'
+        },
+        tool_type: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Tool Type'
+        },
+        config_json: {
+            anyOf: [
+                {
+                    additionalProperties: true,
+                    type: 'object'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Config Json'
+        },
+        is_active: {
+            anyOf: [
+                {
+                    type: 'boolean'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Is Active'
+        }
+    },
+    type: 'object',
+    title: 'ToolConfigUpdate',
+    description: '更新工具配置Schema'
+} as const;
+
+export const ToolConfigsPublicSchema = {
+    properties: {
+        data: {
+            items: {
+                '$ref': '#/components/schemas/ToolConfigPublic'
+            },
+            type: 'array',
+            title: 'Data'
+        },
+        count: {
+            type: 'integer',
+            title: 'Count'
+        }
+    },
+    type: 'object',
+    required: ['data', 'count'],
+    title: 'ToolConfigsPublic',
+    description: '工具配置列表'
 } as const;
 
 export const UpdatePasswordSchema = {

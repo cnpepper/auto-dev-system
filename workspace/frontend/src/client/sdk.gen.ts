@@ -3,7 +3,207 @@
 import type { CancelablePromise } from './core/CancelablePromise';
 import { OpenAPI } from './core/OpenAPI';
 import { request as __request } from './core/request';
-import type { ItemsReadItemsData, ItemsReadItemsResponse, ItemsCreateItemData, ItemsCreateItemResponse, ItemsReadItemData, ItemsReadItemResponse, ItemsUpdateItemData, ItemsUpdateItemResponse, ItemsDeleteItemData, ItemsDeleteItemResponse, LoginLoginAccessTokenData, LoginLoginAccessTokenResponse, LoginTestTokenResponse, LoginRecoverPasswordData, LoginRecoverPasswordResponse, LoginResetPasswordData, LoginResetPasswordResponse, LoginRecoverPasswordHtmlContentData, LoginRecoverPasswordHtmlContentResponse, PrivateCreateUserData, PrivateCreateUserResponse, UsersReadUsersData, UsersReadUsersResponse, UsersCreateUserData, UsersCreateUserResponse, UsersReadUserMeResponse, UsersDeleteUserMeResponse, UsersUpdateUserMeData, UsersUpdateUserMeResponse, UsersUpdatePasswordMeData, UsersUpdatePasswordMeResponse, UsersRegisterUserData, UsersRegisterUserResponse, UsersReadUserByIdData, UsersReadUserByIdResponse, UsersUpdateUserData, UsersUpdateUserResponse, UsersDeleteUserData, UsersDeleteUserResponse, UtilsTestEmailData, UtilsTestEmailResponse, UtilsHealthCheckResponse } from './types.gen';
+import type { ConfigsReadSystemConfigsResponse, ConfigsCreateSystemConfigData, ConfigsCreateSystemConfigResponse, ConfigsReadSystemConfigData, ConfigsReadSystemConfigResponse, ConfigsUpdateSystemConfigData, ConfigsUpdateSystemConfigResponse, ConfigsReadToolConfigsResponse, ConfigsCreateToolConfigData, ConfigsCreateToolConfigResponse, ConfigsReadToolConfigData, ConfigsReadToolConfigResponse, ConfigsUpdateToolConfigData, ConfigsUpdateToolConfigResponse, ConfigsActivateToolData, ConfigsActivateToolResponse, ConfigsDeactivateToolData, ConfigsDeactivateToolResponse, ItemsReadItemsData, ItemsReadItemsResponse, ItemsCreateItemData, ItemsCreateItemResponse, ItemsReadItemData, ItemsReadItemResponse, ItemsUpdateItemData, ItemsUpdateItemResponse, ItemsDeleteItemData, ItemsDeleteItemResponse, LoginLoginAccessTokenData, LoginLoginAccessTokenResponse, LoginTestTokenResponse, LoginRecoverPasswordData, LoginRecoverPasswordResponse, LoginResetPasswordData, LoginResetPasswordResponse, LoginRecoverPasswordHtmlContentData, LoginRecoverPasswordHtmlContentResponse, PrivateCreateUserData, PrivateCreateUserResponse, ProjectsReadProjectsData, ProjectsReadProjectsResponse, ProjectsCreateProjectData, ProjectsCreateProjectResponse, ProjectsReadProjectData, ProjectsReadProjectResponse, ProjectsUpdateProjectData, ProjectsUpdateProjectResponse, ProjectsDeleteProjectData, ProjectsDeleteProjectResponse, ProjectsStartProjectData, ProjectsStartProjectResponse, ProjectsPauseProjectData, ProjectsPauseProjectResponse, ProjectsResumeProjectData, ProjectsResumeProjectResponse, ProjectsReadProjectStagesData, ProjectsReadProjectStagesResponse, StagesReadStageData, StagesReadStageResponse, StagesUpdateStageData, StagesUpdateStageResponse, StagesApproveStageData, StagesApproveStageResponse, StagesRejectStageData, StagesRejectStageResponse, StagesReadStageModulesData, StagesReadStageModulesResponse, StagesReadStageLogsData, StagesReadStageLogsResponse, StagesReadStageReportsData, StagesReadStageReportsResponse, UsersReadUsersData, UsersReadUsersResponse, UsersCreateUserData, UsersCreateUserResponse, UsersReadUserMeResponse, UsersDeleteUserMeResponse, UsersUpdateUserMeData, UsersUpdateUserMeResponse, UsersUpdatePasswordMeData, UsersUpdatePasswordMeResponse, UsersRegisterUserData, UsersRegisterUserResponse, UsersReadUserByIdData, UsersReadUserByIdResponse, UsersUpdateUserData, UsersUpdateUserResponse, UsersDeleteUserData, UsersDeleteUserResponse, UtilsTestEmailData, UtilsTestEmailResponse, UtilsHealthCheckResponse } from './types.gen';
+
+export class ConfigsService {
+    /**
+     * Read System Configs
+     * 获取所有系统配置
+     * @returns SystemConfigsPublic Successful Response
+     * @throws ApiError
+     */
+    public static readSystemConfigs(): CancelablePromise<ConfigsReadSystemConfigsResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/configs/system'
+        });
+    }
+    
+    /**
+     * Create System Config
+     * 创建系统配置
+     * @param data The data for the request.
+     * @param data.requestBody
+     * @returns SystemConfigPublic Successful Response
+     * @throws ApiError
+     */
+    public static createSystemConfig(data: ConfigsCreateSystemConfigData): CancelablePromise<ConfigsCreateSystemConfigResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/configs/system',
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Read System Config
+     * 根据key获取系统配置
+     * @param data The data for the request.
+     * @param data.configKey
+     * @returns SystemConfigPublic Successful Response
+     * @throws ApiError
+     */
+    public static readSystemConfig(data: ConfigsReadSystemConfigData): CancelablePromise<ConfigsReadSystemConfigResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/configs/system/{config_key}',
+            path: {
+                config_key: data.configKey
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Update System Config
+     * 更新系统配置
+     * @param data The data for the request.
+     * @param data.configId
+     * @param data.requestBody
+     * @returns SystemConfigPublic Successful Response
+     * @throws ApiError
+     */
+    public static updateSystemConfig(data: ConfigsUpdateSystemConfigData): CancelablePromise<ConfigsUpdateSystemConfigResponse> {
+        return __request(OpenAPI, {
+            method: 'PATCH',
+            url: '/api/v1/configs/system/{config_id}',
+            path: {
+                config_id: data.configId
+            },
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Read Tool Configs
+     * 获取所有工具配置
+     * @returns ToolConfigsPublic Successful Response
+     * @throws ApiError
+     */
+    public static readToolConfigs(): CancelablePromise<ConfigsReadToolConfigsResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/configs/tools'
+        });
+    }
+    
+    /**
+     * Create Tool Config
+     * 创建工具配置
+     * @param data The data for the request.
+     * @param data.requestBody
+     * @returns ToolConfigPublic Successful Response
+     * @throws ApiError
+     */
+    public static createToolConfig(data: ConfigsCreateToolConfigData): CancelablePromise<ConfigsCreateToolConfigResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/configs/tools',
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Read Tool Config
+     * 获取单个工具配置
+     * @param data The data for the request.
+     * @param data.toolId
+     * @returns ToolConfigPublic Successful Response
+     * @throws ApiError
+     */
+    public static readToolConfig(data: ConfigsReadToolConfigData): CancelablePromise<ConfigsReadToolConfigResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/configs/tools/{tool_id}',
+            path: {
+                tool_id: data.toolId
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Update Tool Config
+     * 更新工具配置
+     * @param data The data for the request.
+     * @param data.toolId
+     * @param data.requestBody
+     * @returns ToolConfigPublic Successful Response
+     * @throws ApiError
+     */
+    public static updateToolConfig(data: ConfigsUpdateToolConfigData): CancelablePromise<ConfigsUpdateToolConfigResponse> {
+        return __request(OpenAPI, {
+            method: 'PATCH',
+            url: '/api/v1/configs/tools/{tool_id}',
+            path: {
+                tool_id: data.toolId
+            },
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Activate Tool
+     * 激活工具
+     * @param data The data for the request.
+     * @param data.toolId
+     * @returns ToolConfigPublic Successful Response
+     * @throws ApiError
+     */
+    public static activateTool(data: ConfigsActivateToolData): CancelablePromise<ConfigsActivateToolResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/configs/tools/{tool_id}/activate',
+            path: {
+                tool_id: data.toolId
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Deactivate Tool
+     * 停用工具
+     * @param data The data for the request.
+     * @param data.toolId
+     * @returns ToolConfigPublic Successful Response
+     * @throws ApiError
+     */
+    public static deactivateTool(data: ConfigsDeactivateToolData): CancelablePromise<ConfigsDeactivateToolResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/configs/tools/{tool_id}/deactivate',
+            path: {
+                tool_id: data.toolId
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+}
 
 export class ItemsService {
     /**
@@ -228,6 +428,373 @@ export class PrivateService {
             url: '/api/v1/private/users/',
             body: data.requestBody,
             mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+}
+
+export class ProjectsService {
+    /**
+     * Read Projects
+     * 获取项目列表
+     * @param data The data for the request.
+     * @param data.skip
+     * @param data.limit
+     * @returns ProjectsPublic Successful Response
+     * @throws ApiError
+     */
+    public static readProjects(data: ProjectsReadProjectsData = {}): CancelablePromise<ProjectsReadProjectsResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/projects/',
+            query: {
+                skip: data.skip,
+                limit: data.limit
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Create Project
+     * 创建新项目
+     * @param data The data for the request.
+     * @param data.requestBody
+     * @returns ProjectPublic Successful Response
+     * @throws ApiError
+     */
+    public static createProject(data: ProjectsCreateProjectData): CancelablePromise<ProjectsCreateProjectResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/projects/',
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Read Project
+     * 获取单个项目详情
+     * @param data The data for the request.
+     * @param data.projectId
+     * @returns ProjectPublic Successful Response
+     * @throws ApiError
+     */
+    public static readProject(data: ProjectsReadProjectData): CancelablePromise<ProjectsReadProjectResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/projects/{project_id}',
+            path: {
+                project_id: data.projectId
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Update Project
+     * 更新项目信息
+     * @param data The data for the request.
+     * @param data.projectId
+     * @param data.requestBody
+     * @returns ProjectPublic Successful Response
+     * @throws ApiError
+     */
+    public static updateProject(data: ProjectsUpdateProjectData): CancelablePromise<ProjectsUpdateProjectResponse> {
+        return __request(OpenAPI, {
+            method: 'PATCH',
+            url: '/api/v1/projects/{project_id}',
+            path: {
+                project_id: data.projectId
+            },
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Delete Project
+     * 删除项目
+     * @param data The data for the request.
+     * @param data.projectId
+     * @returns unknown Successful Response
+     * @throws ApiError
+     */
+    public static deleteProject(data: ProjectsDeleteProjectData): CancelablePromise<ProjectsDeleteProjectResponse> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/api/v1/projects/{project_id}',
+            path: {
+                project_id: data.projectId
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Start Project
+     * 启动项目流程
+     *
+     * 将项目状态从 idle 改为 running，并创建初始流程阶段
+     * @param data The data for the request.
+     * @param data.projectId
+     * @returns ProjectPublic Successful Response
+     * @throws ApiError
+     */
+    public static startProject(data: ProjectsStartProjectData): CancelablePromise<ProjectsStartProjectResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/projects/{project_id}/start',
+            path: {
+                project_id: data.projectId
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Pause Project
+     * 暂停项目
+     *
+     * 将项目状态改为 paused
+     * @param data The data for the request.
+     * @param data.projectId
+     * @returns ProjectPublic Successful Response
+     * @throws ApiError
+     */
+    public static pauseProject(data: ProjectsPauseProjectData): CancelablePromise<ProjectsPauseProjectResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/projects/{project_id}/pause',
+            path: {
+                project_id: data.projectId
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Resume Project
+     * 恢复项目
+     *
+     * 将项目状态从 paused 改为 running
+     * @param data The data for the request.
+     * @param data.projectId
+     * @returns ProjectPublic Successful Response
+     * @throws ApiError
+     */
+    public static resumeProject(data: ProjectsResumeProjectData): CancelablePromise<ProjectsResumeProjectResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/projects/{project_id}/resume',
+            path: {
+                project_id: data.projectId
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Read Project Stages
+     * 获取项目的所有流程阶段
+     * @param data The data for the request.
+     * @param data.projectId
+     * @returns ProcessStagesPublic Successful Response
+     * @throws ApiError
+     */
+    public static readProjectStages(data: ProjectsReadProjectStagesData): CancelablePromise<ProjectsReadProjectStagesResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/projects/{project_id}/stages',
+            path: {
+                project_id: data.projectId
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+}
+
+export class StagesService {
+    /**
+     * Read Stage
+     * 获取单个流程阶段详情
+     * @param data The data for the request.
+     * @param data.stageId
+     * @returns ProcessStagePublic Successful Response
+     * @throws ApiError
+     */
+    public static readStage(data: StagesReadStageData): CancelablePromise<StagesReadStageResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/stages/{stage_id}',
+            path: {
+                stage_id: data.stageId
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Update Stage
+     * 更新流程阶段信息
+     * @param data The data for the request.
+     * @param data.stageId
+     * @param data.requestBody
+     * @returns ProcessStagePublic Successful Response
+     * @throws ApiError
+     */
+    public static updateStage(data: StagesUpdateStageData): CancelablePromise<StagesUpdateStageResponse> {
+        return __request(OpenAPI, {
+            method: 'PATCH',
+            url: '/api/v1/stages/{stage_id}',
+            path: {
+                stage_id: data.stageId
+            },
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Approve Stage
+     * 人工审批通过
+     *
+     * 将阶段状态改为 approved，流程编排引擎将继续执行下一阶段
+     * @param data The data for the request.
+     * @param data.stageId
+     * @returns ProcessStagePublic Successful Response
+     * @throws ApiError
+     */
+    public static approveStage(data: StagesApproveStageData): CancelablePromise<StagesApproveStageResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/stages/{stage_id}/approve',
+            path: {
+                stage_id: data.stageId
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Reject Stage
+     * 人工审批拒绝
+     *
+     * 将阶段状态改为 rejected，流程编排引擎将进行回退或终止
+     * @param data The data for the request.
+     * @param data.stageId
+     * @param data.reason
+     * @returns ProcessStagePublic Successful Response
+     * @throws ApiError
+     */
+    public static rejectStage(data: StagesRejectStageData): CancelablePromise<StagesRejectStageResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/stages/{stage_id}/reject',
+            path: {
+                stage_id: data.stageId
+            },
+            query: {
+                reason: data.reason
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Read Stage Modules
+     * 获取阶段的所有功能模块
+     * @param data The data for the request.
+     * @param data.stageId
+     * @returns FunctionModulesPublic Successful Response
+     * @throws ApiError
+     */
+    public static readStageModules(data: StagesReadStageModulesData): CancelablePromise<StagesReadStageModulesResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/stages/{stage_id}/modules',
+            path: {
+                stage_id: data.stageId
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Read Stage Logs
+     * 获取阶段的执行日志(分页)
+     * @param data The data for the request.
+     * @param data.stageId
+     * @param data.page
+     * @param data.pageSize
+     * @returns ExecutionLogsPublic Successful Response
+     * @throws ApiError
+     */
+    public static readStageLogs(data: StagesReadStageLogsData): CancelablePromise<StagesReadStageLogsResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/stages/{stage_id}/logs',
+            path: {
+                stage_id: data.stageId
+            },
+            query: {
+                page: data.page,
+                page_size: data.pageSize
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Read Stage Reports
+     * 获取阶段的所有测试报告
+     * @param data The data for the request.
+     * @param data.stageId
+     * @returns TestReportPublic Successful Response
+     * @throws ApiError
+     */
+    public static readStageReports(data: StagesReadStageReportsData): CancelablePromise<StagesReadStageReportsResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/stages/{stage_id}/reports',
+            path: {
+                stage_id: data.stageId
+            },
             errors: {
                 422: 'Validation Error'
             }

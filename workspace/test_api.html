@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API诊断工具</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border-left: 4px solid #2196F3;
+            background-color: #f9f9f9;
+        }
+        .success {
+            border-left-color: #4CAF50;
+        }
+        .error {
+            border-left-color: #f44336;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid #ddd;
+        }
+        .status {
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 3px;
+            display: inline-block;
+        }
+        .status.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 项目详情页面诊断工具</h1>
+        
+        <div class="test-section">
+            <h3>步骤 1: 获取访问令牌</h3>
+            <p>请从浏览器控制台（F12）复制令牌：</p>
+            <code>localStorage.getItem('access_token')</code>
+            <input type="text" id="tokenInput" placeholder="粘贴访问令牌">
+            <button onclick="saveToken()">保存令牌</button>
+        </div>
+
+        <div class="test-section">
+            <h3>步骤 2: 测试API接口</h3>
+            <button onclick="testAPIs()" id="testBtn">开始测试</button>
+            <div id="results"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>步骤 3: 查看项目详情</h3>
+            <input type="number" id="projectIdInput" placeholder="输入项目ID">
+            <button onclick="testProjectDetail()">测试项目详情</button>
+            <div id="detailResults"></div>
+        </div>
+    </div>
+
+    <script>
+        let token = '';
+
+        function saveToken() {
+            token = document.getElementById('tokenInput').value.trim();
+            if (token) {
+                alert('令牌已保存！');
+            } else {
+                alert('请输入有效的令牌！');
+            }
+        }
+
+        async function fetchAPI(url) {
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                return await response.json();
+            } catch (error) {
+                throw error;
+            }
+        }
+
+        async function testAPIs() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<p>测试中...</p>';
+            
+            if (!token) {
+                resultsDiv.innerHTML = '<p class="status error">请先输入访问令牌！</p>';
+                return;
+            }
+
+            let html = '';
+            
+            // 测试项目列表
+            try {
+                const projects = await fetchAPI('http://localhost:8000/api/v1/projects/');
+                html += `<div class="test-section success">
+                    <p><span class="status success">✓ 项目列表API正常</span></p>
+                    <p>项目数量: ${projects.count}</p>
+                    ${projects.data.length > 0 ? 
+                        `<p>第一个项目: ${projects.data[0].name} (ID: ${projects.data[0].id})</p>
+                         <button onclick="document.getElementById('projectIdInput').value='${projects.data[0].id}'">
+                             使用此项目ID测试
+                         </button>` : 
+                        '<p class="status error">暂无项目，请先创建项目</p>'}
+                </div>`;
+            } catch (error) {
+                html += `<div class="test-section error">
+                    <p><span class="status error">✗ 项目列表API失败</span></p>
+                    <p>错误: ${error.message}</p>
+                </div>`;
+            }
+            
+            resultsDiv.innerHTML = html;
+        }
+
+        async function testProjectDetail() {
+            const projectId = document.getElementById('projectIdInput').value;
+            const detailResultsDiv = document.getElementById('detailResults');
+            
+            if (!projectId) {
+                detailResultsDiv.innerHTML = '<p class="status error">请输入项目ID！</p>';
+                return;
+            }
+            
+            if (!token) {
+                detailResultsDiv.innerHTML = '<p class="status error">请先输入访问令牌！</p>';
+                return;
+            }
+
+            detailResultsDiv.innerHTML = '<p>测试中...</p>';
+            let html = '';
+            
+            // 测试项目详情
+            try {
+                const project = await fetchAPI(`http://localhost:8000/api/v1/projects/${projectId}`);
+                html += `<div class="test-section success">
+                    <p><span class="status success">✓ 项目详情API正常</span></p>
+                    <pre>${JSON.stringify(project, null, 2)}</pre>
+                </div>`;
+                
+                // 测试流程阶段
+                try {
+                    const stages = await fetchAPI(`http://localhost:8000/api/v1/projects/${projectId}/stages`);
+                    html += `<div class="test-section ${stages.count > 0 ? 'success' : ''}">
+                        <p><span class="status ${stages.count > 0 ? 'success' : 'error'}">
+                            ${stages.count > 0 ? '✓' : '⚠'} 流程阶段API
+                        </span></p>
+                        <p>阶段数量: ${stages.count}</p>
+                        ${stages.count === 0 ? '<p class="status error">该项目暂无流程阶段，这是正常的（新创建的项目）</p>' : ''}
+                        <pre>${JSON.stringify(stages, null, 2)}</pre>
+                    </div>`;
+                } catch (error) {
+                    html += `<div class="test-section error">
+                        <p><span class="status error">✗ 流程阶段API失败</span></p>
+                        <p>错误: ${error.message}</p>
+                    </div>`;
+                }
+                
+            } catch (error) {
+                html += `<div class="test-section error">
+                    <p><span class="status error">✗ 项目详情API失败</span></p>
+                    <p>错误: ${error.message}</p>
+                </div>`;
+            }
+            
+            detailResultsDiv.innerHTML = html;
+        }
+    </script>
+</body>
+</html>

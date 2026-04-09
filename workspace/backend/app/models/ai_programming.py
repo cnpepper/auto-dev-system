@@ -37,8 +37,10 @@ class ProjectBase(SQLModel):
     current_stage: str = Field(default="idle", max_length=50, description="当前阶段")
     current_module: Optional[str] = Field(default=None, max_length=255, description="当前功能模块名称")
     status: str = Field(default="idle", max_length=50, description="项目状态")
-    input_document_dir: str = Field(max_length=500, description="文档输入目录路径")
-    project_path: str = Field(max_length=500, description="项目代码路径")
+    input_document_dir: str = Field(default="./input_docs", max_length=500, description="文档输入目录路径")
+    project_path: str = Field(default="./projects", max_length=500, description="项目代码路径")
+    requirements: Optional[str] = Field(default=None, description="项目需求")
+    tech_stack: Optional[str] = Field(default=None, description="技术栈")
     current_session_id: Optional[str] = Field(default=None, max_length=100, description="当前活跃的会话ID")
 
 
