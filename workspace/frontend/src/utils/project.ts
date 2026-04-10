@@ -35,6 +35,7 @@ export const getProjectStatusColor = (status: string): string => {
  */
 export const formatStageType = (stageType: string): string => {
   const typeMap: Record<string, string> = {
+    developing: "开发阶段",
     development: "开发阶段",
     testing: "测试阶段",
     design: "设计阶段",
@@ -42,6 +43,7 @@ export const formatStageType = (stageType: string): string => {
   }
   return typeMap[stageType] || stageType
 }
+
 
 /**
  * 格式化阶段状态
@@ -132,8 +134,9 @@ export const formatDuration = (seconds: number): string => {
  * 计算项目进度百分比
  */
 export const calculateProgress = (currentStage: string): number => {
-  const stages = ["idle", "development", "testing", "completed"]
+  const stages = ["idle", "developing", "testing", "completed"]
   const index = stages.indexOf(currentStage)
   if (index === -1) return 0
   return Math.round((index / (stages.length - 1)) * 100)
 }
+

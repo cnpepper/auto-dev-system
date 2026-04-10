@@ -1,6 +1,7 @@
 /**
  * 项目卡片组件
  */
+import { Link, useNavigate } from "@tanstack/react-router"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -16,7 +17,6 @@ import type { ProjectPublic } from "@/client"
 
 interface ProjectCardProps {
   project: ProjectPublic
-  onView: () => void
   onStart?: () => void
   onPause?: () => void
   onResume?: () => void
@@ -24,20 +24,29 @@ interface ProjectCardProps {
 
 export function ProjectCard({
   project,
-  onView,
   onStart,
   onPause,
   onResume,
 }: ProjectCardProps) {
+  const navigate = useNavigate()
+  const projectId = String(project.id)
   const progress = calculateProgress(project.current_stage)
 
+  const goDetail = () => {
+    navigate({ to: "/projects/$projectId", params: { projectId } })
+  }
+
   return (
-    <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+    <Card className="hover:shadow-lg transition-shadow">
       <CardHeader>
         <div className="flex justify-between items-start">
-          <CardTitle className="text-lg cursor-pointer hover:text-primary" onClick={onView}>
+          <Link 
+            to="/projects/$projectId" 
+            params={{ projectId }}
+            className="text-lg font-semibold leading-none tracking-tight hover:text-primary cursor-pointer"
+          >
             {project.name}
-          </CardTitle>
+          </Link>
           <Badge className={getProjectStatusColor(project.status)}>
             {formatProjectStatus(project.status)}
           </Badge>
@@ -76,24 +85,24 @@ export function ProjectCard({
           {/* 操作按钮 */}
           <div className="flex gap-2 pt-2">
             {project.status === "idle" && onStart && (
-              <Button size="sm" onClick={onStart} className="flex-1">
+              <Button size="sm" onClick={(e) => { e.stopPropagation(); onStart(); }} className="flex-1">
                 <Play className="h-4 w-4 mr-1" />
                 启动
               </Button>
             )}
             {project.status === "running" && onPause && (
-              <Button size="sm" variant="outline" onClick={onPause} className="flex-1">
+              <Button size="sm" variant="outline" onClick={(e) => { e.stopPropagation(); onPause(); }} className="flex-1">
                 <Pause className="h-4 w-4 mr-1" />
                 暂停
               </Button>
             )}
             {project.status === "paused" && onResume && (
-              <Button size="sm" onClick={onResume} className="flex-1">
+              <Button size="sm" onClick={(e) => { e.stopPropagation(); onResume(); }} className="flex-1">
                 <RotateCcw className="h-4 w-4 mr-1" />
                 恢复
               </Button>
             )}
-            <Button size="sm" variant="outline" onClick={onView} className="flex-1">
+            <Button size="sm" variant="outline" className="flex-1" onClick={goDetail}>
               查看详情
             </Button>
           </div>
@@ -102,3 +111,4 @@ export function ProjectCard({
     </Card>
   )
 }
+

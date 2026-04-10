@@ -17,9 +17,11 @@ from app.models import (
     TestReport,
     TestReportPublic,
 )
+from app.services.process_engine import ProcessEngine, StageStatus
 import app.crud_ai_programming as crud
 
 router = APIRouter()
+
 
 
 @router.get("/{stage_id}", response_model=ProcessStagePublic)
@@ -81,17 +83,17 @@ def approve_stage(
             detail=f"Cannot approve stage with status: {db_stage.status}"
         )
     
-    # 更新阶段状态
-    update_data = ProcessStageUpdate(status="approved")
-    stage = crud.update_process_stage(
-        session=session,
-        db_stage=db_stage,
-        stage_in=update_data,
-    )
-    
-    # TODO: 触发流程编排引擎继续执行
-    
+    engine = ProcessEngine(session=session)
+    try:
+        stage = engine.transition_stage(
+            stage_id=stage_id,
+            new_status=StageStatus.APPROVED,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
     return stage
+
 
 
 @router.post("/{stage_id}/reject", response_model=ProcessStagePublic)
@@ -117,17 +119,18 @@ def reject_stage(
             detail=f"Cannot reject stage with status: {db_stage.status}"
         )
     
-    # 更新阶段状态
-    update_data = ProcessStageUpdate(status="rejected")
-    stage = crud.update_process_stage(
-        session=session,
-        db_stage=db_stage,
-        stage_in=update_data,
-    )
-    
-    # TODO: 触发流程编排引擎回退或终止
-    
+    engine = ProcessEngine(session=session)
+    try:
+        stage = engine.transition_stage(
+            stage_id=stage_id,
+            new_status=StageStatus.REJECTED,
+            error_message=reason or None,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
     return stage
+
 
 
 @router.get("/{stage_id}/modules", response_model=FunctionModulesPublic)

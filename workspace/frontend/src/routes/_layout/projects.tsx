@@ -1,8 +1,8 @@
 /**
  * 项目列表页面
  */
-import { createFileRoute } from "@tanstack/react-router"
-import { useState } from "react"
+import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router"
+import { useMemo, useState } from "react"
 import { Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -26,14 +26,18 @@ import {
   useResumeProject,
   useDeleteProject,
 } from "@/hooks/useProjects"
-import { useNavigate } from "@tanstack/react-router"
 
 export const Route = createFileRoute("/_layout/projects")({
   component: ProjectsPage,
 })
 
 function ProjectsPage() {
-  const navigate = useNavigate()
+  const { location } = useRouterState()
+  const isDetail = useMemo(
+    () => location.pathname.startsWith("/projects/") && location.pathname !== "/projects",
+    [location.pathname]
+  )
+
   const { data: projectsData, isLoading } = useProjects()
   const createMutation = useCreateProject()
   const startMutation = useStartProject()
@@ -75,10 +79,6 @@ function ProjectsPage() {
     )
   }
 
-  const handleViewProject = (projectId: number) => {
-    navigate({ to: '/projects/$projectId', params: { projectId: String(projectId) } })
-  }
-
   const handleStartProject = (projectId: number) => {
     startMutation.mutate(projectId)
   }
@@ -89,6 +89,10 @@ function ProjectsPage() {
 
   const handleResumeProject = (projectId: number) => {
     resumeMutation.mutate(projectId)
+  }
+
+  if (isDetail) {
+    return <Outlet />
   }
 
   if (isLoading) {
@@ -109,6 +113,12 @@ function ProjectsPage() {
           <h1 className="text-3xl font-bold">项目管理</h1>
           <p className="text-gray-600 mt-1">管理所有自动化AI编程项目</p>
         </div>
+        <div className="flex gap-2">
+          <Link to="/projects/$projectId" params={{ projectId: "1" }}>
+            <Button variant="outline">
+              测试跳转
+            </Button>
+          </Link>
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
             <Button>
@@ -201,6 +211,7 @@ function ProjectsPage() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+        </div>
       </div>
 
       {/* 项目列表 */}
@@ -218,7 +229,6 @@ function ProjectsPage() {
             <ProjectCard
               key={project.id}
               project={project}
-              onView={() => handleViewProject(project.id)}
               onStart={() => handleStartProject(project.id)}
               onPause={() => handlePauseProject(project.id)}
               onResume={() => handleResumeProject(project.id)}
@@ -231,3 +241,4 @@ function ProjectsPage() {
 }
 
 export default ProjectsPage
+

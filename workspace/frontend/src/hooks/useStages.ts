@@ -67,10 +67,17 @@ export function useRejectStage() {
   return useMutation({
     mutationFn: (stageId: number) =>
       StagesService.rejectStage({ stageId }),
-    onSuccess: (_, stageId) => {
+    onSuccess: (stage, stageId) => {
       queryClient.invalidateQueries({ queryKey: ["stage", stageId] })
+      if ((stage as any)?.project_id) {
+        const projectId = (stage as any).project_id
+        queryClient.invalidateQueries({ queryKey: ["project", projectId] })
+        queryClient.invalidateQueries({ queryKey: ["projects", projectId, "stages"] })
+      }
+      queryClient.invalidateQueries({ queryKey: ["projects"] })
       showSuccessToast("审批拒绝")
     },
+
     onError: (error: Error) => {
       showErrorToast(`操作失败: ${error.message}`)
     },
@@ -89,9 +96,9 @@ export function useStageModules(stageId: number) {
 }
 
 /**
- * 获取阶段的执行日志
+ * 获取阶段的执行日志（分页）
  */
-export function useStageLogs(stageId: number, params?: { skip?: number; limit?: number }) {
+export function useStageLogs(stageId: number, params?: { page?: number; page_size?: number }) {
   return useQuery({
     queryKey: ["stage", stageId, "logs", params],
     queryFn: () => StagesService.readStageLogs({ stageId, ...params }),

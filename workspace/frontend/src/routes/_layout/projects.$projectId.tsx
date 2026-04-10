@@ -1,6 +1,7 @@
 /**
  * 项目详情页面
  */
+import { useEffect, useMemo, useState } from "react"
 import { createFileRoute } from "@tanstack/react-router"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -22,6 +23,7 @@ import {
   calculateProgress,
 } from "@/utils/project"
 
+
 export const Route = createFileRoute("/_layout/projects/$projectId")({
   component: ProjectDetailPage,
 })
@@ -39,8 +41,21 @@ function ProjectDetailPage() {
   const rejectMutation = useRejectStage()
 
   const stages = stagesData?.data || []
+  const [activeStageId, setActiveStageId] = useState<number | null>(null)
+
+  useEffect(() => {
+    if (stages.length > 0) {
+      setActiveStageId((prev) => prev ?? stages[0].id)
+    }
+  }, [stages])
+
+  const { data: logsData, isLoading: logsLoading } = useStageLogs(
+    activeStageId || 0,
+    { page: 1, page_size: 50 }
+  )
 
   if (projectLoading || !project) {
+
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-gray-600">加载中...</div>
@@ -159,13 +174,59 @@ function ProjectDetailPage() {
             <CardHeader>
               <CardTitle>执行日志</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="text-center py-8 text-gray-600">
-                请选择具体的流程阶段查看日志
-              </div>
+            <CardContent className="space-y-4">
+              {stages.length > 0 ? (
+                <div className="flex flex-wrap gap-2">
+                  {stages.map((s) => (
+                    <Button
+                      key={s.id}
+                      size="sm"
+                      variant={s.id === activeStageId ? "default" : "outline"}
+                      onClick={() => setActiveStageId(s.id)}
+                    >
+                      {formatStageType(s.stage_type)} · {formatStageStatus(s.status)}
+                    </Button>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-sm text-gray-600">暂无阶段</div>
+              )}
+
+              {logsLoading ? (
+                <div className="text-sm text-gray-600">日志加载中...</div>
+              ) : !activeStageId ? (
+                <div className="text-sm text-gray-600">请选择一个阶段查看日志</div>
+              ) : (logsData?.data?.length ? (
+                <div className="space-y-3 max-h-96 overflow-auto pr-1">
+                  {logsData.data.map((log) => (
+                    <div
+                      key={log.id}
+                      className="border rounded-lg p-3 flex items-start gap-3"
+                    >
+                      <Badge className={getLogLevelColor(log.log_level)}>
+                        {formatLogLevel(log.log_level)}
+                      </Badge>
+                      <div className="flex-1 space-y-1">
+                        <div className="text-sm text-gray-900">{log.message}</div>
+                        {log.extra_data && (
+                          <pre className="text-xs bg-muted rounded p-2 overflow-auto">
+                            {JSON.stringify(log.extra_data, null, 2)}
+                          </pre>
+                        )}
+                        <div className="text-xs text-gray-500">
+                          {formatDateTime(log.created_at)}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-sm text-gray-600">该阶段暂无日志</div>
+              ))}
             </CardContent>
           </Card>
         </TabsContent>
+
 
         {/* 测试报告 */}
         <TabsContent value="reports">
@@ -246,4 +307,3 @@ function StageCard({ stage, onApprove, onReject }: {
   )
 }
 
-export default ProjectDetailPage

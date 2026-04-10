@@ -14,9 +14,11 @@ from app.models import (
     ProcessStagePublic,
     ProcessStagesPublic,
 )
+from app.services.process_engine import ProcessEngine
 import app.crud_ai_programming as crud
 
 router = APIRouter()
+
 
 
 @router.get("/", response_model=ProjectsPublic)
@@ -123,17 +125,15 @@ def start_project(
             detail=f"Cannot start project with status: {db_project.status}"
         )
     
-    # 更新项目状态
-    update_data = ProjectUpdate(status="running")
-    project = crud.update_project(
-        session=session,
-        db_project=db_project,
-        project_in=update_data,
-    )
-    
-    # TODO: 触发流程编排引擎启动流程
-    
+    # 调用流程引擎：更新状态 + 创建阶段 + 写日志
+    engine = ProcessEngine(session=session)
+    try:
+        project = engine.start_project(project_id=project_id)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
     return project
+
 
 
 @router.post("/{project_id}/pause", response_model=ProjectPublic)
@@ -158,17 +158,15 @@ def pause_project(
             detail=f"Cannot pause project with status: {db_project.status}"
         )
     
-    # 更新项目状态
-    update_data = ProjectUpdate(status="paused")
-    project = crud.update_project(
-        session=session,
-        db_project=db_project,
-        project_in=update_data,
-    )
-    
-    # TODO: 触发流程编排引擎暂停流程
-    
+    # 调用流程引擎暂停
+    engine = ProcessEngine(session=session)
+    try:
+        project = engine.pause_project(project_id=project_id)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
     return project
+
 
 
 @router.post("/{project_id}/resume", response_model=ProjectPublic)
@@ -193,17 +191,15 @@ def resume_project(
             detail=f"Cannot resume project with status: {db_project.status}"
         )
     
-    # 更新项目状态
-    update_data = ProjectUpdate(status="running")
-    project = crud.update_project(
-        session=session,
-        db_project=db_project,
-        project_in=update_data,
-    )
-    
-    # TODO: 触发流程编排引擎恢复流程
-    
+    # 调用流程引擎恢复
+    engine = ProcessEngine(session=session)
+    try:
+        project = engine.resume_project(project_id=project_id)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
     return project
+
 
 
 @router.get("/{project_id}/stages", response_model=ProcessStagesPublic)

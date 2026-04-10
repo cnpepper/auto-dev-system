@@ -101,8 +101,10 @@ export function useStartProject() {
     onSuccess: (_, projectId) => {
       queryClient.invalidateQueries({ queryKey: ["projects"] })
       queryClient.invalidateQueries({ queryKey: ["project", projectId] })
+      queryClient.invalidateQueries({ queryKey: ["projects", projectId, "stages"] })
       showSuccessToast("项目已启动")
     },
+
     onError: (error: Error) => {
       showErrorToast(`启动失败: ${error.message}`)
     },
@@ -122,8 +124,10 @@ export function usePauseProject() {
     onSuccess: (_, projectId) => {
       queryClient.invalidateQueries({ queryKey: ["projects"] })
       queryClient.invalidateQueries({ queryKey: ["project", projectId] })
+      queryClient.invalidateQueries({ queryKey: ["projects", projectId, "stages"] })
       showSuccessToast("项目已暂停")
     },
+
     onError: (error: Error) => {
       showErrorToast(`暂停失败: ${error.message}`)
     },
@@ -143,8 +147,10 @@ export function useResumeProject() {
     onSuccess: (_, projectId) => {
       queryClient.invalidateQueries({ queryKey: ["projects"] })
       queryClient.invalidateQueries({ queryKey: ["project", projectId] })
+      queryClient.invalidateQueries({ queryKey: ["projects", projectId, "stages"] })
       showSuccessToast("项目已恢复")
     },
+
     onError: (error: Error) => {
       showErrorToast(`恢复失败: ${error.message}`)
     },
